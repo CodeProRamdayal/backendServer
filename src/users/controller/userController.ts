@@ -4,7 +4,9 @@ import { Role, User } from '../../database/models';
 import { HttpError } from '../../common/errors';
 import { issueToken } from '../../common/auth';
 import { asyncHandler } from '../../common/errors';
-import { createUser, deleteUser, getUser, listUsers, serializeUser, updateUser } from '../services/userService';
+import {
+  createUser, deleteUser, getUser, getUserSummary, listUsers, serializeUser, updateUser
+} from '../services/userService';
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findOne({
@@ -38,6 +40,10 @@ export const readOne = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const readAll = asyncHandler(async (req: Request, res: Response) => {
+  if (req.query.summary === 'true') {
+    res.json({ data: await getUserSummary() });
+    return;
+  }
   const page = Number(req.query.page || 1);
   const limit = Number(req.query.limit || 25);
   const result = await listUsers(page, limit, req.query.search as string | undefined);

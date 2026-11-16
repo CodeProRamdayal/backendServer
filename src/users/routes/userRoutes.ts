@@ -25,8 +25,10 @@ router.post('/',
 );
 router.get('/',
   requirePermission('Read'),
+  query('summary').optional().isBoolean(),
   query('page').optional().isInt({ min: 1 }),
-  query('limit').optional().isInt({ min: 1, max: 100 }),
+  query('limit').optional().isInt({ min: 1, max: 25 }),
+  query('search').optional().isString().isLength({ max: 100 }),
   validate,
   readAll
 );

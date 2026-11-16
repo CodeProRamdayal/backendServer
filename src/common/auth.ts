@@ -23,13 +23,15 @@ export function issueToken(user: User): string {
 
 export async function authenticate(req: Request, _res: Response, next: NextFunction) {
   try {
-    const header = req.header('authorization');
+    const header = req.headers.authorization;
     if (!header || !header.startsWith('Bearer ')) {
       throw new HttpError(401, 'Authentication required.');
     }
+    const token = header.slice('Bearer '.length).trim();
+    if (!token) throw new HttpError(401, 'Authentication required.');
     let payload: JwtPayload;
     try {
-      payload = jwt.verify(header.slice(7), jwtSecret) as JwtPayload;
+      payload = jwt.verify(token, jwtSecret) as JwtPayload;
     } catch {
       throw new HttpError(401, 'Invalid or expired authentication token.');
     }

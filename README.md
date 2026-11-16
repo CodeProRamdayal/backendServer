@@ -23,7 +23,7 @@ All application endpoints are under `/api/v1`. Send authenticated requests with 
 - `GET /salary/structures` and structure create/update/delete endpoints
 - `GET /health`
 
-List endpoints accept `page` and `limit`; user search also accepts `search`. Access is controlled by the seeded Create, Read, Update, Delete, and Approve permissions. Password hashes and token version fields are excluded from normal user responses.
+`GET /user?summary=true` returns the employee count, total salary, and role counts without employee records. `GET /user?page=1&limit=25` returns a page of employees; `limit` is capped at 25 and `search` filters by name or email. Access is controlled by the seeded Create, Read, Update, Delete, and Approve permissions. Password hashes and token version fields are excluded from normal user responses.
 
 ## Validation
 
